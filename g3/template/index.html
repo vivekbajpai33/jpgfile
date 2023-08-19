@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section style="background-color: darkgray;">
+    <div style="width: 70%; margin: auto;">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Name:</label>
+                <input type="text" class="form-control" name="user" required>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">File:</label>
+                <input type="file" class="form-control" id="file" name="img" accept=".png"  required>
+                <div id="demo"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" onclick="check()">Submit</button>
+        </form>
+
+        <div>
+          {% include "search.html" %}
+        </div>
+
+
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>File</th>
+                <th>Delete</th>
+            </tr>
+
+            {% for i in di %}
+            <tr>
+                <td>{{i.name}}</td>
+                <td>{{i.file}}</td>
+                <td>
+                    <form action="{% url 'delete' i.id %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                         <input class="btn btn-primary btn-sm" type="submit" value="delete" >
+                    </form>
+                </td>
+                
+            </tr>
+            {% empty %}
+            <span class="text-center text-danger">No Data Found</span>
+
+            {% endfor %}
+            
+        </table>
+    </div>
+</section>
+
+
+
+<script> 
+  var c = document.getElementById('file').value;
+  function check() {
+    if(c.endsWith('.png'))[
+        document.getElementById('demo').innerHTML = "Only jpg file accepted"
+    ]
+    
+  }
+
+
+  var x = document.getElementById('file');
+  function size(){
+    var z  = parseFloat(x.files[0].size/ (2*1024)).toFixed(2);
+    if (z>20){
+        alert("Only 2 mb file upload");
+    }
+
+  }
+</script>
+
+
+{% endblock content %}
